@@ -1,6 +1,7 @@
 import { useState, React } from "react";
 import { Redirect } from "react-router-dom";
 import { login, getToken, setUserIdLocal, getUserId } from "../auth";
+import Footer from './Footer'
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -108,7 +109,7 @@ const Register = ({
     localStorage.removeItem('products');
   }
 
-  return (
+  return (<>
     <div>
       <Container>
         <center>
@@ -188,6 +189,8 @@ const Register = ({
         </Form>
       </Container>
     </div>
+    <Footer/>
+    </>
   );
 };
 

@@ -11,14 +11,13 @@ import {
   Checkout,
   Error,
   ThankYou,
-  Navigation, 
-  Profile
+  Navigation,
+  Profile,
+  Footer,
 } from "./components";
 import { getToken, getUser, getUserId } from "./auth";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-
-
 
 const App = () => {
   const [token, setToken] = useState("");
@@ -52,7 +51,7 @@ const App = () => {
     if (userId) {
       getOrdersForUser();
     }
-    
+
     if (getToken() && getToken() !== undefined) {
       setAuthentication(true);
     }
@@ -95,6 +94,7 @@ const App = () => {
         {/* <Link to="/games/(name of game)">individual game</Link> */}
       {/* <Link to="/checkout">CHECKOUT</Link>
       </nav> */}
+
       <main>
         <Switch>
           <Route path="/admin">
@@ -171,24 +171,21 @@ const App = () => {
           </Route>
 
           <Route path="/checkout">
-            <Checkout 
-              userId={userId} 
-              setOrders={setOrders} 
-              orders={orders} 
+            <Checkout
+              userId={userId}
+              setOrders={setOrders}
+              orders={orders}
               cart={cart}
               setCart={setCart}
               guestOrder={guestOrder}
               setGuestOrder={setGuestOrder}
-              />
-          </Route>
-          <Route path="/profile">
-            <Profile
-            username={username}
-            userId={userId}
             />
           </Route>
+          <Route path="/profile">
+            <Profile username={username} userId={userId} />
+          </Route>
           <Route path="/thankyou">
-            <ThankYou/>
+            <ThankYou />
           </Route>
           <Route path="/">
             <Home />

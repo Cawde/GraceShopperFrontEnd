@@ -2,6 +2,7 @@ import "./Admin.css";
 import { useState, useEffect } from "react";
 import { Link, useRouteMatch, Route } from "react-router-dom";
 import { getToken } from "../auth";
+import Footer from './Footer'
 import AddProductModal from "./AddProductModal";
 import EditProductModal from "./EditProductModal";
 import EditAdminStatus from "./EditAdminStatus";
@@ -499,6 +500,7 @@ const Admin = () => {
           </center>
         </section>
       </Route>
+      <Footer/>
     </div>
   );
 };

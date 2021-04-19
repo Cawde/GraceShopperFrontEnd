@@ -1,21 +1,11 @@
 .thankYouPage{
-    display: flex;
-    flex-direction: row;
+
 
     /* grid-template-rows: 1fr;
     grid-template-columns: 1fr 1fr; */
     margin-top: 200px;
 }
 
-.thankYouImage{
-    float: left;
-    /* grid-row: 1;
-    grid-column: 1; */
-    height: 600px;
-    width: 500px;
-    margin-left: 20vw;
-    margin-right: -5vw;
-}
 
  .info{ 
     /* grid-row: 1;
@@ -23,7 +13,7 @@
     border: none;
     width: 50vw;
     height: 50vh;
-    float: right;
+
  
     font-family: 'Megrim', cursive;
     font-weight: bold;
@@ -56,6 +46,11 @@
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
     font-size: 20px;
+}
+
+.angelBoy{
+    width: 800px;
+    height: 600px;
 }
 
 .customerService{

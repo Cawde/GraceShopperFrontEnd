@@ -1,5 +1,6 @@
 import { React, useState } from "react";
 import { Redirect, Link } from "react-router-dom";
+import Footer from './Footer'
 // import RegisterModal from "./RegisterModal";
 import { getToken, getUser, login, user, setUserIdLocal, getUserId } from "../auth";
 import Form from "react-bootstrap/Form";
@@ -112,9 +113,9 @@ const Login = ({
     return <Redirect to="./admin" />;
   }
 
-  return (
+  return ( <>
     <div>
-      <Container>
+      <Container style={{marginBottom: "175px"}}>
         <center>
           <h1 
           style={{ 
@@ -122,7 +123,7 @@ const Login = ({
             color: "white",
             fontSize: "50px",
             fontFamily: "'Megrim', cursive",
-            fontWeight: "bold",
+            fontWeight: "bold"
             }}>LOGIN </h1>
         </center>
         <Form onSubmit={authentication}>
@@ -171,13 +172,15 @@ const Login = ({
               color: "white",
               fontWeight: "bold",
               border: "#0718EB",
-              padding: "10px",
-              margin: "10px 15px",
+              padding: "8px 45px",
+              margin: "9px 15px",
               borderRadius: "7%",
-              fontSize: "14px",
+              fontSize: "16px",
+              textAlign: "center",
+              border: "1px #007bff solid"
             }}
           >
-            Click to Register
+            Register
           </Link>
         </Form>
       </Container>
@@ -189,7 +192,10 @@ const Login = ({
             authenticate={authenticate}
             setAuthentication={setAuthentication}
           /> */}
+          
     </div>
+    <Footer/>
+    </>
   );
 };
 

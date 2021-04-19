@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Footer from './Footer'
 import Table from "react-bootstrap/Table";
 
 const Profile = ({ username, userId }) => {
@@ -109,6 +110,7 @@ const Profile = ({ username, userId }) => {
           </center>
         </section>
       </center>
+      <Footer/>
     </div>
   );
 };

@@ -131,8 +131,28 @@ const Checkout = ({
   }
 
   const clearCart = () => {
-    setCart([]);
-    removeGuestProducts();
+    orders.forEach((order) => {
+    fetch(
+      `https://peaceful-spire-60083.herokuapp.com/api/orders/${order.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderStatus: "cancelled",
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data, "order is cancelled");
+        setCart([]);
+        setOrders([]);
+        removeGuestProducts();
+      })
+      .catch(console.error); 
+    })
   };
 
   useEffect(() => {

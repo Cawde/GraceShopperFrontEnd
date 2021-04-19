@@ -1,6 +1,6 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import { Redirect } from "react-router";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {getProductForGuests} from '../auth'
 const API = "https://peaceful-spire-60083.herokuapp.com/api";
@@ -54,12 +54,12 @@ const ShoppingCartModal = ({
       return orders.map((order, index) => {
         subtotal = Math.round((subtotal + order.productPrice) * 100) / 100;
         return (
-          <div key={index}>
+          <div key={index} style={{marginTop: "20px"}}>
             <img
-              src={order.imageURL}
-              width="50"
-              height="50"
               className="game-icon"
+              src={order.imageURL}
+              width="70px"
+              height="70px"
             />
             <h5>{order.productTitle}</h5>
             <h5>${order.productPrice}</h5>
@@ -73,15 +73,23 @@ const ShoppingCartModal = ({
       return guestOrder.map((order, index) => {
         subtotal = Math.round((subtotal + order.productPrice) * 100) / 100;
         return (
-          <div key={index}>
+          <>
+          <div key={index} style={{marginTop: "20px"}}>
             <img
               src={order.productImageURL}
-              width="50"
-              height="50"
               className="game-icon"
+              style={{ 
+                width:"70px",
+                height:"70px", 
+              }}
+             
             />
             <h5>{order.productTitle}</h5>
             <h5>${order.productPrice}</h5>
+
+           
+          </div>
+          <div margin-bottom= "40px">
             <Button
               variant="danger"
               onClick={() => removeProductFromGuestCart(order.productId)}
@@ -89,6 +97,8 @@ const ShoppingCartModal = ({
               Remove Item
             </Button>
           </div>
+
+          </>
         );
       });
     }
@@ -105,24 +115,48 @@ const ShoppingCartModal = ({
       // style={{backgroundColor: linear-gradient(to right, #3dd0d8 0%, rgba(146, 82, 234, 0.64) 100%)}}
       />
 
-      <Modal show={show} onHide={handleClose} bg="dark" className="special_modal">
-        <Modal.Header closeButton>
-          <Modal.Title>Here's the items in your cart</Modal.Title>
+      <Modal show={show} onHide={handleClose}  className="special_modal">
+        <Modal.Header closeButton style={{backgroundColor: "#510087"}}>
+          <Modal.Title
+          style={{
+            textAlign: "center",
+            fontFamily: "'Megrim', cursive",
+            fontWeight: "bolder",
+            fontSize: "30px",
+            color: "white"
+            
+          }}
+          >CART</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{backgroundColor:"#decbe8", color: "black", textAlign: "center"}}>
           <div className="cart">
             {cart()}
             {/* {!userId ? guestShoppingCart() : "There's no items in your cart"} */}
           </div>
+          <div style={{backgroundColor: "#510087", color: "white", marginTop: "20px", height: "120px", alignItems: "center", justifyContent: "center"}}>
+          <h6>...... </h6>
           <h6>Subtotal: {subtotal}</h6>
           <h6>Tax: 10%</h6>
           <h6>Total: {Math.round(subtotal * tax * 100) / 100}</h6>
+          </div>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+        <Modal.Footer style={{backgroundColor:"#decbe8"}}>
+          <Button variant="danger" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary">Checkout</Button>
+          <Link to='/checkout'
+          style={{ 
+            background: "#0718EB",
+            background: "-webkit-linear-gradient(top right, #0718EB, #BA08B4)",
+            background: "-moz-linear-gradient(top right, #0718EB, #BA08B4)",
+            background: "linear-gradient(to bottom left, #0718EB, #BA08B4)",
+            color: "white",
+            fontWeight: "bold",
+            padding: "7px",
+            borderRadius: "5px"
+          }}
+          
+          >Checkout</Link>
         </Modal.Footer>
       </Modal>
     </>

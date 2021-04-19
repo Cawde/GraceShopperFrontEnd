@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SingleGame from "./SingleGame";
+import Footer from './Footer'
 import Button from "react-bootstrap/Button";
 // import {addProduct} from "../auth"
 const API = "https://peaceful-spire-60083.herokuapp.com/api";
@@ -199,6 +200,7 @@ const Games = ({
             : "There's no games to display!"}
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };
