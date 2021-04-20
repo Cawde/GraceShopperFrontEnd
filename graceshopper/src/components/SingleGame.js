@@ -1,5 +1,6 @@
 import { Redirect } from "react-router";
 import Button from "react-bootstrap/Button";
+import { toast } from "react-toastify";
 import moment from "moment";
 import "./SingleGame.css";
 const API = "https://peaceful-spire-60083.herokuapp.com/api";
@@ -7,64 +8,90 @@ const API = "https://peaceful-spire-60083.herokuapp.com/api";
 const SingleGame = ({ game, userId, setOrders, setGuestOrder, guestOrder }) => {
   console.log(game);
   // const date = moment(game.releaseDate).format("DD MMM, YYYY");
-    const getOrdersForUser = () => {
-      fetch(`${API}/orders/${userId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          setOrders(data);
-        })
-        .catch(console.error);
-    };
-
-    const addOrderToCart = (productId, productTitle) => {
-      fetch(`${API}/orders`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: userId,
-          productId: productId,
-          count: 1,
-          orderStatus: "created",
-          orderCreated: new Date(),
-        }),
+  const getOrdersForUser = () => {
+    fetch(`${API}/orders/${userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setOrders(data);
       })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          data.orderStatus === "created"
-            ? alert(`${productTitle} has been added to cart`)
-            : alert("This order already exists");
-          getOrdersForUser();
-        });
-    };
+      .catch(console.error);
+  };
 
-    const addProductGuest = (
-      productId,
-      productTitle,
-      productPrice,
-      productImageURL
-    ) => {
-      let products = [];
-      console.log(guestOrder);
-      if (localStorage.getItem("products")) {
-        products = JSON.parse(localStorage.getItem("products"));
-      }
-      products.push({
+  const addOrderToCart = (productId, productTitle) => {
+    fetch(`${API}/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: userId,
         productId: productId,
-        productTitle: productTitle,
-        productPrice: productPrice,
-        productImageURL: productImageURL,
         count: 1,
+        orderStatus: "created",
+        orderCreated: new Date(),
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        data.orderStatus === "created"
+          ? toast.success(`${productTitle} has been added to cart.`, {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            })
+          : toast.error(`This order already exists`, {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+        getOrdersForUser();
       });
-      localStorage.setItem("products", JSON.stringify(products));
+  };
+
+  const addProductGuest = (
+    productId,
+    productTitle,
+    productPrice,
+    productImageURL
+  ) => {
+    let products = [];
+    console.log(guestOrder);
+    if (localStorage.getItem("products")) {
       products = JSON.parse(localStorage.getItem("products"));
-      setGuestOrder(products);
-      console.log(guestOrder);
-      alert(`${productTitle} has been added to cart.`);
-    };
+    }
+    products.push({
+      productId: productId,
+      productTitle: productTitle,
+      productPrice: productPrice,
+      productImageURL: productImageURL,
+      count: 1,
+    });
+    localStorage.setItem("products", JSON.stringify(products));
+    products = JSON.parse(localStorage.getItem("products"));
+    setGuestOrder(products);
+    console.log(guestOrder);
+    // alert(`${productTitle} has been added to cart.`);
+
+    toast.success(`${productTitle} has been added to cart.`, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
 
   return game ? (
     <div className="single-game">
@@ -117,12 +144,7 @@ const SingleGame = ({ game, userId, setOrders, setGuestOrder, guestOrder }) => {
               if (userId) {
                 addOrderToCart(game.id, game.title);
               } else {
-                addProductGuest(
-                  game.id,
-                  game.title,
-                  game.price,
-                  game.imageURL
-                );
+                addProductGuest(game.id, game.title, game.price, game.imageURL);
               }
             }}
           >

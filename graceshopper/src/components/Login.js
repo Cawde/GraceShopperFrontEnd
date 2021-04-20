@@ -2,6 +2,7 @@ import { React, useState } from "react";
 import { Redirect, Link } from "react-router-dom";
 import Footer from './Footer'
 // import RegisterModal from "./RegisterModal";
+import {toast} from 'react-toastify'
 import { getToken, getUser, login, user, setUserIdLocal, getUserId } from "../auth";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -23,6 +24,7 @@ const Login = ({
 }) => {
   const [password, setPassword] = useState();
   const [loginSuccessful, setLoginSuccessful] = useState(false);
+ 
 
   function authentication(event) {
     event.preventDefault();
@@ -39,8 +41,18 @@ const Login = ({
       .then((response) => response.json())
       .then((result) => {
         if (result.name === "IncorrectCredentialsError") {
-          alert("Username or Password does not match. Please try again.");
+          // alert("Username or Password does not match. Please try again.");
           // setOrders([])
+       
+          toast.error("Username or Password does not match. Please try again.", {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         } else {
           console.log(result);
           login(result.token);
@@ -100,7 +112,16 @@ const Login = ({
       console.log("is logged in");
       setAuthentication(true);
       setLoginSuccessful(true);
-      alert(result.message);
+      // alert(result.message);
+      toast.success(`Welcome back, ${username}! Happy shopping!`, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } else {
       console.log("not logged in");
       alert(result.message);

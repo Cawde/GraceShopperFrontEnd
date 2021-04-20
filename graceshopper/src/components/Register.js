@@ -1,10 +1,12 @@
 import { useState, React } from "react";
 import { Redirect } from "react-router-dom";
 import { login, getToken, setUserIdLocal, getUserId } from "../auth";
-import Footer from './Footer'
+import {toast} from 'react-toastify'
+import Footer from "./Footer";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
+
 const API = "https://peaceful-spire-60083.herokuapp.com/api";
 
 const Register = ({
@@ -18,11 +20,12 @@ const Register = ({
   setGuestOrder,
   setOrders,
   userId,
-  setUserId
+  setUserId,
 }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [passwordConfirmation, setPassWordConfirmation] = useState();
+ 
 
   function createUser(event) {
     event.preventDefault();
@@ -44,8 +47,37 @@ const Register = ({
           if (result.error) {
             alert(result.error);
           }
-          if(result.message === `duplicate key value violates unique constraint "users_email_key"`)
-          {alert("Email already used. Please use another email to register.")}
+          if (
+            result.message ===
+            `duplicate key value violates unique constraint "users_email_key"`
+          ) {
+            // alert("Email already used. Please use another email to register.");
+
+            toast.error("Email already used. Please use another email to register.", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
+          if (result.message === `A user by that username already exists`) {
+            // alert(
+            //   `A user by that username already exists. Please use another one.`
+            // );
+         
+            toast.error(`A user by that username already exists. Please use another one.`, {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
           if (result.token !== undefined) {
             login(result.token);
             setToken(getToken());
@@ -65,7 +97,17 @@ const Register = ({
     if (result.token) {
       console.log("is registered");
       setAuthentication(true);
-      alert(result.message);
+      // alert(result.message);
+ 
+      toast.success("Thank you for registering at Video Game Heaven! Happy shopping!", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } else {
       console.log("not registered");
     }
@@ -86,7 +128,7 @@ const Register = ({
   };
 
   const moveOrdersFromGuestToUser = (id) => {
-    guestOrder.forEach(order => {
+    guestOrder.forEach((order) => {
       fetch(`${API}/orders`, {
         method: "POST",
         headers: {
@@ -106,90 +148,97 @@ const Register = ({
         });
     });
     setGuestOrder([]);
-    localStorage.removeItem('products');
-  }
+    localStorage.removeItem("products");
+  };
 
-  return (<>
-    <div>
-      <Container>
-        <center>
-          <h1 
-          style={{ 
-            padding: "35px", 
-            fontSize: "50px",
-            fontFamily: "'Megrim', cursive",
-            fontWeight: "bold",
-            color: "white"
-            }}>REGISTER HERE!</h1>
-        </center>
-        <Form onSubmit={createUser}>
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label style={{ color: "white"  }}>Email</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              onChange={(event) => {
-                setEmail(event.target.value);
+  return (
+    <>
+      <div>
+        <Container>
+          <center>
+            <h1
+              style={{
+                padding: "35px",
+                fontSize: "50px",
+                fontFamily: "'Megrim', cursive",
+                fontWeight: "bold",
+                color: "white",
               }}
-            />
-          </Form.Group>
+            >
+              REGISTER HERE!
+            </h1>
+          </center>
+          <Form onSubmit={createUser}>
+            <Form.Group controlId="formBasicEmail">
+              <Form.Label style={{ color: "white" }}>Email</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                }}
+              />
+            </Form.Group>
 
-          <Form.Group controlId="formBasicUsername">
-            <Form.Label style={{ color: "white"  }}>Username</Form.Label>
-            <Form.Control
-              type="username"
-              placeholder="Enter username"
-              onChange={(event) => {
-                setUsername(event.target.value);
+            <Form.Group controlId="formBasicUsername">
+              <Form.Label style={{ color: "white" }}>Username</Form.Label>
+              <Form.Control
+                type="username"
+                placeholder="Enter username"
+                onChange={(event) => {
+                  setUsername(event.target.value);
+                }}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label style={{ color: "white" }}>Password</Form.Label>
+              <Form.Control
+                placeholder="Password"
+                minLength="8"
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                }}
+              />
+              <Form.Text id="passwordHelpInline" muted>
+                Must be greater than 7 characters.
+              </Form.Text>
+            </Form.Group>
+
+            <Form.Group controlId="formBasicPasswordConfirmation">
+              <Form.Label style={{ color: "white" }}>
+                Password Confirmation
+              </Form.Label>
+              <Form.Control
+                placeholder="Password Confirmation"
+                minLength="8"
+                onChange={(event) => {
+                  setPassWordConfirmation(event.target.value);
+                }}
+              />
+              <Form.Text id="passwordHelpInline" muted>
+                Must be greater than 7 characters.
+              </Form.Text>
+            </Form.Group>
+
+            <Button
+              type="submit"
+              style={{
+                background: "#0718EB",
+                background:
+                  "-webkit-linear-gradient(top right, #0718EB, #BA08B4)",
+                background: "-moz-linear-gradient(top right, #0718EB, #BA08B4)",
+                background: "linear-gradient(to bottom left, #0718EB, #BA08B4)",
+                color: "white",
+                fontWeight: "bold",
               }}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label style={{ color: "white"  }}>Password</Form.Label>
-            <Form.Control
-              placeholder="Password"
-              minLength="8"
-              onChange={(event) => {
-                setPassword(event.target.value);
-              }}
-            />
-            <Form.Text id="passwordHelpInline" muted>
-              Must be greater than 7 characters.
-            </Form.Text>
-          </Form.Group>
-
-          <Form.Group controlId="formBasicPasswordConfirmation">
-            <Form.Label style={{ color: "white"  }}>Password Confirmation</Form.Label>
-            <Form.Control
-              placeholder="Password Confirmation"
-              minLength="8"
-              onChange={(event) => {
-                setPassWordConfirmation(event.target.value);
-              }}
-            />
-            <Form.Text id="passwordHelpInline" muted>
-              Must be greater than 7 characters.
-            </Form.Text>
-          </Form.Group>
-
-          <Button 
-           type="submit"
-           style={{
-            background: "#0718EB",
-            background: "-webkit-linear-gradient(top right, #0718EB, #BA08B4)",
-            background: "-moz-linear-gradient(top right, #0718EB, #BA08B4)",
-            background: "linear-gradient(to bottom left, #0718EB, #BA08B4)",
-            color: "white",
-            fontWeight: "bold"
-           }}
-           >
-            Submit
-          </Button>
-        </Form>
-      </Container>
-    </div>
-    <Footer/>
+            >
+              Submit
+            </Button>
+          </Form>
+        </Container>
+      </div>
+      <Footer />
     </>
   );
 };

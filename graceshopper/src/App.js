@@ -1,5 +1,7 @@
 import { React, useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   Home,
   Admin,
@@ -13,7 +15,6 @@ import {
   ThankYou,
   Navigation,
   Profile,
-  Footer,
 } from "./components";
 import { getToken, getUser, getUserId } from "./auth";
 
@@ -65,19 +66,20 @@ const App = () => {
   }, []);
 
   return (
-    <Router>
-      <Navigation
-        userId={userId}
-        orders={orders}
-        setOrders={setOrders}
-        guestOrder={guestOrder}
-        setGuestOrder={setGuestOrder}
-        cart={cart}
-        setCart={setCart}
-        authenticate={authenticate}
-        username={username}
-      />
-      {/* <nav>
+    <>
+      <Router>
+        <Navigation
+          userId={userId}
+          orders={orders}
+          setOrders={setOrders}
+          guestOrder={guestOrder}
+          setGuestOrder={setGuestOrder}
+          cart={cart}
+          setCart={setCart}
+          authenticate={authenticate}
+          username={username}
+        />
+        {/* <nav>
         <Link to="/">HOME</Link>
         <Link to="/admin">ADMIN</Link>
         {getToken() && authenticate ? (
@@ -92,107 +94,109 @@ const App = () => {
         <Link to="/register">REGISTER</Link>
         <Link to="/games">GAMES</Link>
         {/* <Link to="/games/(name of game)">individual game</Link> */}
-      {/* <Link to="/checkout">CHECKOUT</Link>
+        {/* <Link to="/checkout">CHECKOUT</Link>
       </nav> */}
 
-      <main>
-        <Switch>
-          <Route path="/admin">
-            {authenticate && getToken() && getUser() ? (
-              <Admin isAdmin={isAdmin} setIsAdmin={setIsAdmin} />
-            ) : (
-              <Error />
-            )}
-          </Route>
+        <main>
+          <Switch>
+            <Route path="/admin">
+              {authenticate && getToken() && getUser() ? (
+                <Admin isAdmin={isAdmin} setIsAdmin={setIsAdmin} />
+              ) : (
+                <Error />
+              )}
+            </Route>
 
-          <Route path="/login">
-            <Login
-              username={username}
-              setUsername={setUsername}
-              token={token}
-              setToken={setToken}
-              authenticate={authenticate}
-              setAuthentication={setAuthentication}
-              isAdmin={isAdmin}
-              setIsAdmin={setIsAdmin}
-              orders={orders}
-              setOrders={setOrders}
-              guestOrder={guestOrder}
-              setGuestOrder={setGuestOrder}
-              userId={userId}
-              setUserId={setUserId}
-            />
-          </Route>
-          <Route path="/logout">
-            <Logout
-              setUserId={setUserId}
-              setOrders={setOrders}
-              authenticate={authenticate}
-              setAuthentication={setAuthentication}
-              setGuestOrder={setGuestOrder}
-            />
-          </Route>
-          <Route path="/register">
-            <Register
-              username={username}
-              setUsername={setUsername}
-              token={token}
-              setToken={setToken}
-              authenticate={authenticate}
-              setAuthentication={setAuthentication}
-              isAdmin={isAdmin}
-              setIsAdmin={setIsAdmin}
-              guestOrder={guestOrder}
-              setOrders={setOrders}
-              setGuestOrder={setGuestOrder}
-              userId={userId}
-              setUserId={setUserId}
-            />
-          </Route>
-          <Route exact path="/games/:gametitle">
-            <SingleGame
-              game={game}
-              userId={userId}
-              setOrders={setOrders}
-              setGuestOrder={setGuestOrder}
-              guestOrder={guestOrder}
-            />
-          </Route>
-          <Route path="/games">
-            <Games
-              orders={orders}
-              setOrders={setOrders}
-              game={game}
-              setGame={setGame}
-              userId={userId}
-              guestOrder={guestOrder}
-              setGuestOrder={setGuestOrder}
-            />
-          </Route>
+            <Route path="/login">
+              <Login
+                username={username}
+                setUsername={setUsername}
+                token={token}
+                setToken={setToken}
+                authenticate={authenticate}
+                setAuthentication={setAuthentication}
+                isAdmin={isAdmin}
+                setIsAdmin={setIsAdmin}
+                orders={orders}
+                setOrders={setOrders}
+                guestOrder={guestOrder}
+                setGuestOrder={setGuestOrder}
+                userId={userId}
+                setUserId={setUserId}
+              />
+            </Route>
+            <Route path="/logout">
+              <Logout
+                setUserId={setUserId}
+                setOrders={setOrders}
+                authenticate={authenticate}
+                setAuthentication={setAuthentication}
+                setGuestOrder={setGuestOrder}
+              />
+            </Route>
+            <Route path="/register">
+              <Register
+                username={username}
+                setUsername={setUsername}
+                token={token}
+                setToken={setToken}
+                authenticate={authenticate}
+                setAuthentication={setAuthentication}
+                isAdmin={isAdmin}
+                setIsAdmin={setIsAdmin}
+                guestOrder={guestOrder}
+                setOrders={setOrders}
+                setGuestOrder={setGuestOrder}
+                userId={userId}
+                setUserId={setUserId}
+              />
+            </Route>
+            <Route exact path="/games/:gametitle">
+              <SingleGame
+                game={game}
+                userId={userId}
+                setOrders={setOrders}
+                setGuestOrder={setGuestOrder}
+                guestOrder={guestOrder}
+              />
+            </Route>
+            <Route path="/games">
+              <Games
+                orders={orders}
+                setOrders={setOrders}
+                game={game}
+                setGame={setGame}
+                userId={userId}
+                guestOrder={guestOrder}
+                setGuestOrder={setGuestOrder}
+              />
+            </Route>
 
-          <Route path="/checkout">
-            <Checkout
-              userId={userId}
-              setOrders={setOrders}
-              orders={orders}
-              cart={cart}
-              setCart={setCart}
-              guestOrder={guestOrder}
-              setGuestOrder={setGuestOrder}
-            />
-          </Route>
-          <Route path="/profile">
-            <Profile username={username} userId={userId} />
-          </Route>
-          <Route path="/thankyou">
-            <ThankYou />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </main>
-    </Router>
+            <Route path="/checkout">
+              <Checkout
+                userId={userId}
+                setOrders={setOrders}
+                orders={orders}
+                cart={cart}
+                setCart={setCart}
+                guestOrder={guestOrder}
+                setGuestOrder={setGuestOrder}
+              />
+            </Route>
+            <Route path="/profile">
+              <Profile username={username} userId={userId} />
+            </Route>
+            <Route path="/thankyou">
+              <ThankYou />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </main>
+      </Router>
+      <ToastContainer/>
+    </>
   );
 };
 

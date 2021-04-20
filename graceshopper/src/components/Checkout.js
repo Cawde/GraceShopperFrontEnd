@@ -132,27 +132,28 @@ const Checkout = ({
 
   const clearCart = () => {
     orders.forEach((order) => {
-    fetch(
-      `https://peaceful-spire-60083.herokuapp.com/api/orders/${order.id}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          orderStatus: "cancelled",
-        }),
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data, "order is cancelled");
-        setCart([]);
-        setOrders([]);
-        removeGuestProducts();
-      })
-      .catch(console.error); 
-    })
+      fetch(
+        `https://peaceful-spire-60083.herokuapp.com/api/orders/${order.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            orderStatus: "cancelled",
+          }),
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data, "order is cancelled");
+          setCart([]);
+          setOrders([]);
+        })
+        .catch(console.error);
+    });
+    removeGuestProducts();
+    setGuestOrder([]);
   };
 
   useEffect(() => {
@@ -165,139 +166,161 @@ const Checkout = ({
     }
   }, []);
 
+  return (
+    <>
+      <div className="order-checkout">
+        <h1 className="secure-checkout"> Secure Checkout </h1>
+        <p className="enjoy"> We hope you enjoy your purchase! </p>
+      </div>
 
-    return (
-        <>
-        <div className="order-checkout">
-            <h1 className="secure-checkout"> Secure Checkout </h1>
-            <p className="enjoy"> We hope you enjoy your purchase! </p>
+      <section>
+        <center>
+          <Table
+            className="left"
+            striped
+            bordered
+            hover
+            style={{
+              backgroundColor: "#decbe8",
+              color: "black",
+              fontWeight: "bolder",
+              width: "75vw",
+              textAlign: "center",
+              marginBottom: "40px",
+            }}
+          >
+            <thead
+              style={{
+                backgroundColor: "#510087",
+                color: "white",
+                textAlign: "center",
+              }}
+            >
+              <tr>
+                <th>Quantity</th>
+                <th> </th>
+                <th>Game Name</th>
+                <th>Price</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+
+            {userId
+              ? orders.map((order, index) => {
+                  subtotal =
+                    Math.round((subtotal + order.productPrice) * 100) / 100;
+                  total = Math.round(subtotal * tax * 100) / 100;
+                  console.log(order);
+                  return (
+                    <tbody key={index}>
+                      <tr>
+                        <td>{order.count}</td>
+                        <td>
+                          <img
+                            src={order.imageURL}
+                            style={{ width: "50px", height: "50px" }}
+                          />
+                        </td>
+                        <td>{order.productTitle}</td>
+                        <td>{order.productPrice}</td>
+                        <td>
+                          <button
+                            className="deleteButton"
+                            onClick={() => deleteOrder(order.id)}
+                          >
+                            Remove Item
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  );
+                })
+              : guestOrder.map((order, index) => {
+                  subtotal =
+                    Math.round((subtotal + order.productPrice) * 100) / 100;
+                  total = Math.round(subtotal * tax * 100) / 100;
+                  return (
+                    <tbody key={index}>
+                      <tr>
+                        <td>{order.count}</td>
+                        <td>
+                          <img
+                            src={order.productImageURL}
+                            style={{ width: "50px", height: "50px" }}
+                          />
+                        </td>
+                        <td>{order.productTitle}</td>
+                        <td>{order.productPrice}</td>
+                        <td>
+                          <button
+                            className="deleteButton"
+                            onClick={() => {
+                              let deleteGuestOrderSpecificProduct = JSON.parse(
+                                localStorage.getItem("products")
+                              );
+                              const idx = deleteGuestOrderSpecificProduct.findIndex(
+                                (product) => product == product.id
+                              );
+                              deleteGuestOrderSpecificProduct.splice(idx, 1);
+                              localStorage.setItem(
+                                "products",
+                                JSON.stringify(deleteGuestOrderSpecificProduct)
+                              );
+                              setGuestOrder(deleteGuestOrderSpecificProduct);
+                            }}
+                          >
+                            Remove Item
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  );
+                })}
+          </Table>
+        </center>
+        <div className="orderTotal">
+          <div>Subtotal: {subtotal}</div>
+          <div>Tax: 10%</div>
+
+          <h6 className="total">Total: {total} </h6>
         </div>
-        
-        <section>
-          <center>
-            <Table className = "left" striped bordered hover style={{backgroundColor:"#decbe8", color: "black", fontWeight: "bolder", width: "75vw", textAlign: "center", marginBottom: "40px"}}>
-                <thead style={{backgroundColor: "#510087", color: "white", textAlign: "center" }}>
-                    <tr>
-                    <th>Quantity</th>
-                    <th> </th>
-                    <th>Game Name</th>
-                    <th>Price</th>
-                    <th>Delete</th>
-                    </tr>
-                </thead>
-                
-                {userId ?
-                orders.map((order, index) => {
-                    subtotal = Math.round((subtotal + order.productPrice) * 100) / 100;
-                    total = Math.round(subtotal * tax * 100) / 100;
-                    console.log(order)
-                    return (
-                        <tbody key={index}>
-                            <tr>
-                                <td>
-                                {order.count}
-                                </td>
-                                <td>
-                                  <img
-                                    src={order.imageURL}
-                                    
-                                    style={{ width: "50px", height: "50px" }}
-                                  />
-                                </td>
-                                <td>{order.productTitle}</td>
-                                <td>{order.productPrice}</td>
-                                <td> 
-                                    <button
-                                        className="deleteButton"
-                                        onClick={() => deleteOrder(order.id)}
-                                    >
-                                        Remove Item
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    )
-                    })
-                    : 
-                    guestOrder.map((order, index) => {
-                      subtotal = Math.round((subtotal + order.productPrice) * 100) / 100;
-                      total = Math.round(subtotal * tax * 100) / 100;
-                      return (
-                          <tbody key={index}>
-                              <tr>
-                                <td>
-                                  {order.count}
-                                </td>
-                                <td>
-                                  <img
-                                      src={order.productImageURL}
-                                      
-                                      style={{ width: "50px", height: "50px" }}
-                                    />
-                                </td>
-                                <td>{order.productTitle}</td>
-                                <td>{order.productPrice}</td>
-                                <td> 
-                                    <button
-                                        className="deleteButton"
-                                        onClick={() => deleteOrder(order.id)}
-                                    >
-                                        Remove Item
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    )})
-                    
-                  }
-                  
-            </Table>
-          </center>
-            <div className="orderTotal">
-                <div>Subtotal: {subtotal}</div>
-                <div>Tax: 10%</div>
-                
-                <h6 className= "total">Total: {total} </h6>
-              </div>
-              <center>
-                <section className="checkoutButtons"> 
-                  {/* <div className="cancel">  */}
-                    <img src="https://i.imgur.com/3p0mNxQ.png" className="x"/>
-                    <button onClick={clearCart} className="cancelButton"> CANCEL </button>
-                  {/* </div> */}
-                  {/* <div className="confirm"> */}
-                    <img src="https://i.imgur.com/yUzJ7Sc.png" className="checkMark"/>
-                    <button className="confirmButton"
-                        // onClick={makePending}
-                        onClick={setOrderConfirmed}
-                        
-                    > 
-                        CONFIRM
-                    </button>
-                  {/* </div> */}
-                
-            { orderConfirmed ? 
-            <div className="AppWrapper">
-                <Elements stripe={stripePromise} >
-                    <CheckoutForm 
+        <center>
+          <section className="checkoutButtons">
+            {/* <div className="cancel">  */}
+            <img src="https://i.imgur.com/3p0mNxQ.png" className="x" />
+            <button onClick={clearCart} className="cancelButton">
+              {" "}
+              CANCEL{" "}
+            </button>
+            {/* </div> */}
+            {/* <div className="confirm"> */}
+            <img src="https://i.imgur.com/yUzJ7Sc.png" className="checkMark" />
+            <button
+              className="confirmButton"
+              // onClick={makePending}
+              onClick={setOrderConfirmed}
+            >
+              CONFIRM
+            </button>
+            {/* </div> */}
+
+            {orderConfirmed ? (
+              <div className="AppWrapper">
+                <Elements stripe={stripePromise}>
+                  <CheckoutForm
                     amount={total}
                     orders={orders}
                     guestOrder={guestOrder}
                     setGuestOrder={setGuestOrder}
-
-                    />
+                  />
                 </Elements>
-            </div>
-            
-            : null}
-            </section>
-            </center>
-        </section>
-        </>
-    )
-}
-
-  
-
+              </div>
+            ) : null}
+          </section>
+        </center>
+      </section>
+    </>
+  );
+};
 
 export default Checkout;

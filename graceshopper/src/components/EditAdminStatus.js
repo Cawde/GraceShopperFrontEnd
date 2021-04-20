@@ -1,15 +1,11 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { getToken } from "../auth";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-const EditAdminStatus = ({
-  userId,
-  userIsAdmin,
-  users,
-  setUsers,
-}) => {
+const EditAdminStatus = ({ userId, userIsAdmin, users, setUsers }) => {
   const [isAdmin, setIsAdmin] = useState(userIsAdmin);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -34,6 +30,18 @@ const EditAdminStatus = ({
           if (result) {
             const updatedUser = users.map((user) => {
               if (user.id === userId) {
+                toast.success(
+                  `${result.username}'s admin status has changed.`,
+                  {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  }
+                );
                 return result;
               } else {
                 return user;
@@ -49,9 +57,15 @@ const EditAdminStatus = ({
   }
   return (
     <div>
-      <Button 
-        style={{ backgroundColor: "#7209b7", border: "#7209b7", color: "white", fontWeight: "bold" }}
-        onClick={handleShow}>
+      <Button
+        style={{
+          backgroundColor: "#7209b7",
+          border: "#7209b7",
+          color: "white",
+          fontWeight: "bold",
+        }}
+        onClick={handleShow}
+      >
         Change Admin Status
       </Button>
       <Modal show={show} onHide={handleClose} className="special_modal">

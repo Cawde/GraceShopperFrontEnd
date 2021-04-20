@@ -1,8 +1,9 @@
 import "./Admin.css";
 import { useState, useEffect } from "react";
 import { Link, useRouteMatch, Route } from "react-router-dom";
+import { toast } from "react-toastify";
 import { getToken } from "../auth";
-import Footer from './Footer'
+import Footer from "./Footer";
 import AddProductModal from "./AddProductModal";
 import EditProductModal from "./EditProductModal";
 import EditAdminStatus from "./EditAdminStatus";
@@ -17,6 +18,7 @@ const Admin = () => {
   const [userSearchTerm, setUserSearchTerm] = useState("");
   const [productSearchTerm, setProductSearchTerm] = useState("");
   const [orderSearchTerm, setOrderSearchTerm] = useState("");
+
 
   useEffect(() => {
     fetch("https://peaceful-spire-60083.herokuapp.com/api/users")
@@ -52,6 +54,15 @@ const Admin = () => {
         console.log(result);
         if (result) {
           const usersAfterDeletion = users.filter((user) => user.id !== userId);
+          toast.success(`${result.username} has been deleted.`, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
           setUsers(usersAfterDeletion);
         }
       })
@@ -76,6 +87,16 @@ const Admin = () => {
           const newProductsAfterDeletion = products.filter(
             (product) => product.id !== productId
           );
+          toast.success(`${result.title} has been deleted.`, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+
           setProducts(newProductsAfterDeletion);
         }
       })
@@ -101,17 +122,20 @@ const Admin = () => {
       </Route>
 
       <center style={{ fontSize: "25px", margin: "10px 0px 20px 0px" }}>
-        <img style={{width: "50px"}} src="https://wmumc.org/wmumc2019/wp-content/uploads/revslider/homepage-slider/staff.png"/>
+        <img
+          style={{ width: "50px" }}
+          src="https://wmumc.org/wmumc2019/wp-content/uploads/revslider/homepage-slider/staff.png"
+        />
         <Link to="/admin/user" style={{ marginRight: "20px" }}>
           {" "}
           VIEW ALL USERS
         </Link>
-        <img style={{width: "50px"}} src="https://i.imgur.com/9juQDwp.png"/>
+        <img style={{ width: "50px" }} src="https://i.imgur.com/9juQDwp.png" />
         <Link to="/admin/products" style={{ marginRight: "20px" }}>
           {" "}
           VIEW ALL PRODUCTS
         </Link>
-        <img style={{width: "40px"}} src="https://i.imgur.com/cMfWc5o.png"/>
+        <img style={{ width: "40px" }} src="https://i.imgur.com/cMfWc5o.png" />
         <Link to="/admin/orders" style={{ marginRight: "20px" }}>
           {" "}
           VIEW ALL ORDERS
@@ -120,7 +144,11 @@ const Admin = () => {
 
       <Route exact path={`${path}`}>
         <center>
-          <img className="isabelle" style={{width: "500px", marginTop: "50px"}}src="https://i.imgur.com/W3mSZqV.png" />
+          <img
+            className="isabelle"
+            style={{ width: "500px", marginTop: "50px" }}
+            src="https://i.imgur.com/W3mSZqV.png"
+          />
         </center>
       </Route>
 
@@ -500,7 +528,7 @@ const Admin = () => {
           </center>
         </section>
       </Route>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

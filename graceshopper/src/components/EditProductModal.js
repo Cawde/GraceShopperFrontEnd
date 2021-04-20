@@ -3,6 +3,7 @@ import { getToken } from "../auth";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import { toast } from "react-toastify";
 
 const EditProductModal = ({
   productId,
@@ -73,6 +74,16 @@ const EditProductModal = ({
           if (result) {
             const newProducts = products.map((product) => {
               if (product.id === productId) {
+                toast.success(`${product.title} has been editted.`, {
+                  position: "top-center",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                });
+
                 return result;
               } else {
                 return product;
@@ -89,7 +100,12 @@ const EditProductModal = ({
   return (
     <div>
       <Button
-        style={{ backgroundColor: "#7209b7", border: "#7209b7", color: "white", fontWeight: "bold" }}
+        style={{
+          backgroundColor: "#7209b7",
+          border: "#7209b7",
+          color: "white",
+          fontWeight: "bold",
+        }}
         onClick={handleShow}
       >
         Edit Product

@@ -19,8 +19,8 @@ const Navigation = ({
     return (
  
         <Navbar className="navBar">
-            {/* <Navbar.Brand href="/">Logo</Navbar.Brand> */}
-            <img src= "https://i.imgur.com/9juQDwp.png" style={{height: "50px", width: "75px"}}/>
+            <Navbar.Brand href="/"><img src= "https://cdn.discordapp.com/attachments/631019099182465033/833848194260664370/Logo_white_transparent_100_by_70.png" style={{height: "50px", width: "75px"}}/></Navbar.Brand>
+            {/* <img src= "https://i.imgur.com/9juQDwp.png" style={{height: "50px", width: "75px"}}/> */}
             <Nav className="ml-auto">
             <Link style={{ color: "white", padding: "7.5px" }} to="/">
                 Home

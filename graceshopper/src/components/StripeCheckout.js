@@ -247,7 +247,7 @@ const CheckoutForm = ({ amount, orders, setOrderConfirmed, setGuestOrder }) => {
                   label="Name"
                   id="name"
                   type="text"
-                  placeholder="Jane Doe"
+                  // placeholder="Jane Doe"
                   required
                   autoComplete="name"
                   value={billingDetails.name}
@@ -262,7 +262,7 @@ const CheckoutForm = ({ amount, orders, setOrderConfirmed, setGuestOrder }) => {
                   label="Email"
                   id="email"
                   type="email"
-                  placeholder="janedoe@gmail.com"
+                  // placeholder="janedoe@gmail.com"
                   required
                   autoComplete="email"
                   value={billingDetails.email}
@@ -277,7 +277,7 @@ const CheckoutForm = ({ amount, orders, setOrderConfirmed, setGuestOrder }) => {
                   label="Phone"
                   id="phone"
                   type="tel"
-                  placeholder="(941) 555-0123"
+                  // placeholder="(941) 555-0123"
                   required
                   autoComplete="tel"
                   value={billingDetails.phone}
